@@ -27,3 +27,20 @@ comments are only one-lined and created using th `#` keyword
 ```py
 # This is a comment
 ```
+# Functions
+functions are defined using the `fun` keyword and their code is started with a `->` as diffrent from `:` in python and `{` and other languages
+```py
+code:
+fun why() -> print("why")
+why()
+output:
+why
+```
+function params are used the same way as in python:
+```py
+code:
+fun egg(text) -> print("egg " + text)
+egg("yolk")
+output:
+egg yolk
+```
