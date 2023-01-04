@@ -1,6 +1,16 @@
 # Dumbness--
 A weird programin language made in python
 
+# Instant code using the interpreter
+Instant code will be runned when the ENTER button is pressed,</br>
+math equations can be entered,
+```
+dumb > 1+1
+2
+```
+# Running a code file
+To run a code file, use whatever file extension you want,
+run the file using ```run(filepath)```
 # Hello World
 the print function prints
 ```py
