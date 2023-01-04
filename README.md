@@ -12,3 +12,8 @@ vars are made using the `var` keyword
 var number = 4
 print(number)
 ```
+# Comments
+comments are only one-lined and created using th `#` keyword
+```py
+# This is a comment
+```
