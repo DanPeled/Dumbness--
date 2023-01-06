@@ -85,9 +85,9 @@ print(full_num)
 print(decimal_num)
 
 output : 
-Enter your text here : <p style = "color: dark_green;">yeello</p>
-Enter a full number here : <p style = "color: dark_green;">1</p>
-Enter a decimal number here : <p style = "color: dark_green;">3.123</p>
+Enter your text here : yeello
+Enter a full number here : 1
+Enter a decimal number here : 3.123
 yeello
 1
 3.123
