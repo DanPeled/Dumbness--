@@ -46,6 +46,7 @@ egg yolk
 ```
 # Loops
 loops are used with either `for <varriable> = <starting value> to <limit> do <code> enddo` or `while <expression> do <code> enddo`
+## For loop
 ```py
 code :
 for i = 0 to 3 do
@@ -57,3 +58,16 @@ EGG YOLK
 EGG YOLK
 EGG YOLK
 ```
+## While Loop
+```py
+code :
+var i = 0
+while i < 3 do
+var i = i + 1
+print(i)
+enddo
+
+output :
+0
+1
+2
