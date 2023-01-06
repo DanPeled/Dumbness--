@@ -45,7 +45,7 @@ output:
 egg yolk
 ```
 # Loops
-loops are used with either `for <varriable> = <starting value> to <limit> do <code> enddo` or `while <expression> do <code> enddo
+loops are used with either `for <varriable> = <starting value> to <limit> do <code> enddo` or `while <expression> do <code> enddo`
 ```py
 code :
 for i = 0 to 3 do
