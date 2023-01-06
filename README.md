@@ -44,3 +44,51 @@ egg("yolk")
 output:
 egg yolk
 ```
+# Loops
+loops are used with either `for <varriable> = <starting value> to <limit> do <code> enddo` or `while <expression> do <code> enddo`
+## For loop
+```py
+code :
+for i = 0 to 3 do
+print("EGG YOLK")
+enddo
+
+output :
+EGG YOLK
+EGG YOLK
+EGG YOLK
+```
+## While Loop
+```py
+code :
+var i = 0
+while i < 3 do
+var i = i + 1
+print(i)
+enddo
+
+output :
+0
+1
+2
+```
+
+# Input
+input is handled by using either `input` for strings, `input_int` for ints, or `input_float` for floats.
+```py
+code :
+var text = input("Enter your text here : ")
+var full_num = input_int("Enter a full number here : ")
+var decimal_num = input_float("Enter a decimal number here : ")
+print(text)
+print(full_num)
+print(decimal_num)
+
+output : 
+Enter your text here : yeello
+Enter a full number here : 1
+Enter a decimal number here : 3.123
+yeello
+1
+3.123
+0
