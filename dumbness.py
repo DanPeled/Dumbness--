@@ -1917,6 +1917,27 @@ class BuiltInFunction(BaseFunction):
 
     execute_turtle_set_color.arg_names = ["color"]
 
+    def execute_turtle_hide(self, exec_ctx):
+        global pl
+        pl.hideturtle()
+        return RTResult().success(Number.null)
+
+    execute_turtle_hide.arg_names = []
+
+    def execute_turtle_show(self, exec_ctx):
+        global pl
+        pl.showturtle()
+        return RTResult().success(Number.null)
+
+    execute_turtle_show.arg_names = []
+
+    def execute_turtle_set_speed(self, exec_ctx):
+        global pl
+        pl.speed(float(str(exec_ctx.symbol_table.get("speed"))))
+        return RTResult().success(Number.null)
+
+    execute_turtle_set_speed.arg_names = ['speed']
+
     # endregion
     def execute_is_number(self, exec_ctx):
         is_number = isinstance(exec_ctx.symbol_table.get("value"), Number)
@@ -2087,6 +2108,9 @@ BuiltInFunction.backwards = BuiltInFunction("turtle_backwards")
 BuiltInFunction.left = BuiltInFunction("turtle_left")
 BuiltInFunction.right = BuiltInFunction("turtle_right")
 BuiltInFunction.turtle_set_color = BuiltInFunction("turtle_set_color")
+BuiltInFunction.turtle_hide = BuiltInFunction("turtle_hide")
+BuiltInFunction.turtle_show = BuiltInFunction("turtle_show")
+BuiltInFunction.turtle_set_speed = BuiltInFunction("turtle_set_speed")
 
 
 #######################################
@@ -2442,6 +2466,9 @@ global_symbol_table.set("turtle_right", BuiltInFunction.right)
 global_symbol_table.set("createTurtle", BuiltInFunction.createTurtle)
 global_symbol_table.set("mainLoop", BuiltInFunction.mainLoop)
 global_symbol_table.set("turtle_set_color", BuiltInFunction.turtle_set_color)
+global_symbol_table.set("turtle_show", BuiltInFunction.turtle_show)
+global_symbol_table.set("turtle_hide", BuiltInFunction.turtle_hide)
+global_symbol_table.set("turtle_set_speed", BuiltInFunction.turtle_set_speed)
 
 
 # endregion
