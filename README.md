@@ -71,3 +71,24 @@ output :
 0
 1
 2
+```
+
+# Input
+input is handled by using either `input` for strings, `input_int` for ints, or `input_float` for floats.
+```py
+code :
+var text = input("Enter your text here : ")
+var full_num = input_int("Enter a full number here : ")
+var decimal_num = input_float("Enter a decimal number here : ")
+print(text)
+print(full_num)
+print(decimal_num)
+
+output : 
+Enter your text here : <p style = "color: dark_green;">yeello</p>
+Enter a full number here : <p style = "color: dark_green;">1</p>
+Enter a decimal number here : <p style = "color: dark_green;">3.123</p>
+yeello
+1
+3.123
+0
