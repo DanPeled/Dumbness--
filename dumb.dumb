@@ -1,0 +1,11 @@
+createScreen("test")
+createTurtle()
+var angle = input_float("Enter angles : ")
+var forward_length = input_float("Enter forward length : ")
+
+while true do
+    turtle_forward(forward_length)
+    turtle_right(angle)
+    turtle_set_color("pink")
+enddo
+mainLoop()

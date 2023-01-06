@@ -7,6 +7,8 @@ from strings_with_arrows import *
 import string
 import os
 import math
+import webbrowser
+import turtle
 
 #######################################
 # CONSTANTS
@@ -15,6 +17,8 @@ import math
 DIGITS = '0123456789'
 LETTERS = string.ascii_letters
 LETTERS_DIGITS = LETTERS + DIGITS
+global wn
+global pl
 
 
 #######################################
@@ -1796,22 +1800,34 @@ class BuiltInFunction(BaseFunction):
     execute_print_ret.arg_names = ['value']
 
     def execute_input(self, exec_ctx):
-        text = input()
+        text = input(str(exec_ctx.symbol_table.get('value')))
         return RTResult().success(String(text))
 
-    execute_input.arg_names = []
+    execute_input.arg_names = ["value"]
 
     def execute_input_int(self, exec_ctx):
         while True:
-            text = input()
+            text = input(str(exec_ctx.symbol_table.get('value')))
             try:
                 number = int(text)
                 break
             except ValueError:
-                print(f"'{text}' must be an integer. Try again!")
+                print(f"'{text}' isn't an integer. Try again!")
         return RTResult().success(Number(number))
 
-    execute_input_int.arg_names = []
+    execute_input_int.arg_names = ['value']
+
+    def execute_input_float(self, exec_ctx):
+        while True:
+            text = input(str(exec_ctx.symbol_table.get('value')))
+            try:
+                number = float(text)
+                break
+            except ValueError:
+                print(f"'{text}' isn't an float. Try again!")
+        return RTResult().success(Number(number))
+
+    execute_input_float.arg_names = ['value']
 
     def execute_clear(self, exec_ctx):
         os.system('cls' if os.name == 'nt' else 'cls')
@@ -1819,6 +1835,89 @@ class BuiltInFunction(BaseFunction):
 
     execute_clear.arg_names = []
 
+    def execute_openurl(self, exec_ctx):  # Opens a tab of a chosen url
+        url = str(exec_ctx.symbol_table.get("value"))
+        webbrowser.open(url, 0)
+        print(f"Opened {url}")
+        return RTResult().success(Number.null)
+
+    execute_openurl.arg_names = ['value']
+
+    # region turtle
+    def execute_createScreen(self, exec_ctx):
+        global wn
+        wn = turtle.Screen()
+        wn.title(str(exec_ctx.symbol_table.get("name")))
+        return RTResult().success(Number.null)
+
+    execute_createScreen.arg_names = ['name']
+
+    def execute_createTurtle(self, exec_ctx):
+        global pl
+        global wn
+        wn = turtle.Screen()
+        pl = turtle.Turtle()
+        return RTResult().success(Number.null)
+
+    execute_createTurtle.arg_names = []
+
+    def execute_mainLoop(self, exec_ctx):
+        global wn
+        wn = turtle.Screen()
+        wn.mainloop()
+        return RTResult().success(Number.null)
+
+    execute_mainLoop.arg_names = []
+
+    def execute_turtle_forward(self, exec_ctx):
+        global pl
+        amount = str(exec_ctx.symbol_table.get("amount"))
+        amount = float(amount)
+        pl.fd(amount)
+
+        return RTResult().success(Number.null)
+
+    execute_turtle_forward.arg_names = ['amount']
+
+    def execute_turtle_backwards(self, exec_ctx):
+        global pl
+        amount = str(exec_ctx.symbol_table.get("amount"))
+        amount = float(amount)
+        pl.bk(amount)
+        return RTResult().success(Number.null)
+
+    execute_turtle_backwards.arg_names = ['amount']
+
+    def execute_turtle_left(self, exec_ctx):
+        global pl
+        amount = float(str(exec_ctx.symbol_table.get("amount")))
+        pl.lt(amount)
+
+        return RTResult().success(Number.null)
+
+    execute_turtle_left.arg_names = ['amount']
+
+    def execute_turtle_right(self, exec_ctx):
+        global pl
+        amount = float(str(exec_ctx.symbol_table.get("amount")))
+        pl.rt(amount)
+
+        return RTResult().success(Number.null)
+
+    execute_turtle_right.arg_names = ['amount']
+
+    def execute_turtle_set_color(self, exec_ctx):
+        global pl
+        color = str(exec_ctx.symbol_table.get("color"))
+        try:
+            pl.color(color)
+        except(turtle.TurtleGraphicsError):
+            print(f"{color} Is An Invalid Color")
+        return RTResult().success(Number.null)
+
+    execute_turtle_set_color.arg_names = ["color"]
+
+    # endregion
     def execute_is_number(self, exec_ctx):
         is_number = isinstance(exec_ctx.symbol_table.get("value"), Number)
         return RTResult().success(Number.true if is_number else Number.false)
@@ -1965,19 +2064,29 @@ class BuiltInFunction(BaseFunction):
 
 
 BuiltInFunction.print = BuiltInFunction("print")
+BuiltInFunction.print = BuiltInFunction("print")
 BuiltInFunction.print_ret = BuiltInFunction("print_ret")
 BuiltInFunction.input = BuiltInFunction("input")
 BuiltInFunction.input_int = BuiltInFunction("input_int")
+BuiltInFunction.input_float = BuiltInFunction("input_float")
 BuiltInFunction.clear = BuiltInFunction("clear")
 BuiltInFunction.is_number = BuiltInFunction("is_number")
 BuiltInFunction.is_string = BuiltInFunction("is_string")
 BuiltInFunction.is_list = BuiltInFunction("is_list")
 BuiltInFunction.is_function = BuiltInFunction("is_function")
 BuiltInFunction.append = BuiltInFunction("append")
-BuiltInFunction.pop = BuiltInFunction("pop")
 BuiltInFunction.extend = BuiltInFunction("extend")
 BuiltInFunction.len = BuiltInFunction("len")
 BuiltInFunction.run = BuiltInFunction("run")
+BuiltInFunction.openurl = BuiltInFunction("openurl")
+BuiltInFunction.createScreen = BuiltInFunction("createScreen")
+BuiltInFunction.createTurtle = BuiltInFunction("createTurtle")
+BuiltInFunction.mainLoop = BuiltInFunction("mainLoop")
+BuiltInFunction.forward = BuiltInFunction("turtle_forward")
+BuiltInFunction.backwards = BuiltInFunction("turtle_backwards")
+BuiltInFunction.left = BuiltInFunction("turtle_left")
+BuiltInFunction.right = BuiltInFunction("turtle_right")
+BuiltInFunction.turtle_set_color = BuiltInFunction("turtle_set_color")
 
 
 #######################################
@@ -2131,7 +2240,7 @@ class Interpreter:
 
         if node.op_tok.type == TT_MINUS:
             number, error = number.multed_by(Number(-1))
-        elif node.op_tok.matches(TT_KEYWORD, 'NOT'):
+        elif node.op_tok.matches(TT_KEYWORD, 'not'):
             number, error = number.notted()
 
         if error:
@@ -2302,6 +2411,7 @@ class Interpreter:
 #######################################
 
 global_symbol_table = SymbolTable()
+# region normal commands
 global_symbol_table.set("null", Number.null)
 global_symbol_table.set("false", Number.false)
 global_symbol_table.set("true", Number.true)
@@ -2310,6 +2420,7 @@ global_symbol_table.set("print", BuiltInFunction.print)
 global_symbol_table.set("print_ret", BuiltInFunction.print_ret)
 global_symbol_table.set("input", BuiltInFunction.input)
 global_symbol_table.set("input_int", BuiltInFunction.input_int)
+global_symbol_table.set("input_float", BuiltInFunction.input_float)
 global_symbol_table.set("clear", BuiltInFunction.clear)
 global_symbol_table.set("cls", BuiltInFunction.clear)
 global_symbol_table.set("is_num", BuiltInFunction.is_number)
@@ -2317,11 +2428,23 @@ global_symbol_table.set("is_str", BuiltInFunction.is_string)
 global_symbol_table.set("is_list", BuiltInFunction.is_list)
 global_symbol_table.set("is_fun", BuiltInFunction.is_function)
 global_symbol_table.set("append", BuiltInFunction.append)
-global_symbol_table.set("pop", BuiltInFunction.pop)
 global_symbol_table.set("extend", BuiltInFunction.extend)
 global_symbol_table.set("len", BuiltInFunction.len)
 global_symbol_table.set("run", BuiltInFunction.run)
+global_symbol_table.set("openurl", BuiltInFunction.openurl)
+# endregion
+# region turtle commands
+global_symbol_table.set("createScreen", BuiltInFunction.createScreen)
+global_symbol_table.set("turtle_forward", BuiltInFunction.forward)
+global_symbol_table.set("turtle_backwards", BuiltInFunction.backwards)
+global_symbol_table.set("turtle_left", BuiltInFunction.left)
+global_symbol_table.set("turtle_right", BuiltInFunction.right)
+global_symbol_table.set("createTurtle", BuiltInFunction.createTurtle)
+global_symbol_table.set("mainLoop", BuiltInFunction.mainLoop)
+global_symbol_table.set("turtle_set_color", BuiltInFunction.turtle_set_color)
 
+
+# endregion
 
 def run(fn, text):
     # Generate tokens
