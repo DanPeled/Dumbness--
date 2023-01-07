@@ -1,11 +1,12 @@
-createScreen("test")
+createScreen("title")
 createTurtle()
-var angle = input_float("Enter angles : ")
-var forward_length = input_float("Enter forward length : ")
-
+var i = 0
+turtle_set_shape("turtle")
+turtle_set_speed("3000")
+turtle_set_pos("30","30")
 while true do
-    turtle_forward(forward_length)
-    turtle_right(angle)
-    turtle_set_color("pink")
+    var i = i + 1
+    turtle_forward("25")
+    turtle_left(i)
+    turtle_set_random_color()
 enddo
-mainLoop()

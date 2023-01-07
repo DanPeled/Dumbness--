@@ -1,6 +1,7 @@
 #######################################
 # IMPORTS
 #######################################
+import random
 
 from strings_with_arrows import *
 
@@ -1938,6 +1939,55 @@ class BuiltInFunction(BaseFunction):
 
     execute_turtle_set_speed.arg_names = ['speed']
 
+    def execute_turtle_set_shape(self, exec_ctx):
+        global pl
+        try:
+            pl.shape(str(exec_ctx.symbol_table.get("shape")))
+        except:
+            print(f"Invalid Turtle shape at line : {self.pos_start.ln}")
+        finally:
+            return RTResult().success(Number.null)
+
+    execute_turtle_set_shape.arg_names = ['shape']
+
+    def execute_turtle_set_pos(self, exec_ctx):
+        global pl
+        try:
+            x = float(str(exec_ctx.symbol_table.get("xCor")))
+            y = float(str(exec_ctx.symbol_table.get("yCor")))
+            pl.setpos(x, y)
+        except:
+            print(f"Invalid turtle position at line : {self.pos_start.ln}")
+        finally:
+            return RTResult().success(Number.null)
+
+    execute_turtle_set_pos.arg_names = ['xCor', 'yCor']
+
+    def execute_turtle_set_random_color(self, exec_ctx):
+        global pl
+        try:
+            turtle.colormode(255)
+            pl.color(random.randint(0, 255),
+                     random.randint(0, 255),
+                     random.randint(0, 255))
+        except:
+            print(F"Invalid color at line {self.pos_start.ln}")
+        finally:
+            return RTResult().success(Number.null)
+
+    execute_turtle_set_random_color.arg_names = []
+
+    def execute_turtle_terminate(self, exec_ctx):
+        try:
+            global wn
+            wn.bye()
+        except:
+            print(f"Error terminating the window at line {self.pos_start.ln}")
+        finally:
+            return RTResult().success(Number.null)
+
+    execute_turtle_terminate.arg_names = []
+
     # endregion
     def execute_is_number(self, exec_ctx):
         is_number = isinstance(exec_ctx.symbol_table.get("value"), Number)
@@ -2111,6 +2161,10 @@ BuiltInFunction.turtle_set_color = BuiltInFunction("turtle_set_color")
 BuiltInFunction.turtle_hide = BuiltInFunction("turtle_hide")
 BuiltInFunction.turtle_show = BuiltInFunction("turtle_show")
 BuiltInFunction.turtle_set_speed = BuiltInFunction("turtle_set_speed")
+BuiltInFunction.turtle_set_shape = BuiltInFunction("turtle_set_shape")
+BuiltInFunction.turtle_set_pos = BuiltInFunction("turtle_set_pos")
+BuiltInFunction.turtle_set_random_color = BuiltInFunction("turtle_set_random_color")
+BuiltInFunction.turtle_terminate = BuiltInFunction("turtle_terminate")
 
 
 #######################################
@@ -2469,6 +2523,10 @@ global_symbol_table.set("turtle_set_color", BuiltInFunction.turtle_set_color)
 global_symbol_table.set("turtle_show", BuiltInFunction.turtle_show)
 global_symbol_table.set("turtle_hide", BuiltInFunction.turtle_hide)
 global_symbol_table.set("turtle_set_speed", BuiltInFunction.turtle_set_speed)
+global_symbol_table.set("turtle_set_shape", BuiltInFunction.turtle_set_shape)
+global_symbol_table.set("turtle_set_pos", BuiltInFunction.turtle_set_pos)
+global_symbol_table.set("turtle_set_random_color", BuiltInFunction.turtle_set_random_color)
+global_symbol_table.set("turtle_terminate", BuiltInFunction.turtle_terminate)
 
 
 # endregion
