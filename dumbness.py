@@ -1999,150 +1999,192 @@ class BuiltInFunction(BaseFunction):
     execute_turtle_set_colormode.arg_names = ["cmode"]
 
     # endregion
-    def execute_is_number(self, exec_ctx):
-        is_number = isinstance(exec_ctx.symbol_table.get("value"), Number)
-        return RTResult().success(Number.true if is_number else Number.false)
-
-    execute_is_number.arg_names = ["value"]
-
-    def execute_is_string(self, exec_ctx):
-        is_number = isinstance(exec_ctx.symbol_table.get("value"), String)
-        return RTResult().success(Number.true if is_number else Number.false)
-
-    execute_is_string.arg_names = ["value"]
-
-    def execute_is_list(self, exec_ctx):
-        is_number = isinstance(exec_ctx.symbol_table.get("value"), List)
-        return RTResult().success(Number.true if is_number else Number.false)
-
-    execute_is_list.arg_names = ["value"]
-
-    def execute_is_function(self, exec_ctx):
-        is_number = isinstance(
-            exec_ctx.symbol_table.get("value"), BaseFunction)
-        return RTResult().success(Number.true if is_number else Number.false)
-
-    execute_is_function.arg_names = ["value"]
-
-    def execute_append(self, exec_ctx):
-        list_ = exec_ctx.symbol_table.get("list")
-        value = exec_ctx.symbol_table.get("value")
-
-        if not isinstance(list_, List):
-            return RTResult().failure(RTError(
-                self.pos_start, self.pos_end,
-                "First argument must be list",
-                exec_ctx
-            ))
-
-        list_.elements.append(value)
+    def execute_createFile(self, exec_ctx):
+        file_path = input("enter a path : ")
+        if not os.path.isfile(file_path):
+            with open(file_path, "w") as file:
+                file.write(" ")
+                print(f"File at {file_path} created.")
+        else:
+            print(f"file : {file_path} already exists, if you are willing to open it use openFile({file_path})")
         return RTResult().success(Number.null)
 
-    execute_append.arg_names = ["list", "value"]
+    execute_createFile.arg_names = []
 
-    def execute_pop(self, exec_ctx):
-        list_ = exec_ctx.symbol_table.get("list")
-        index = exec_ctx.symbol_table.get("index")
+    def execute_openFile(self, exec_ctx, file_path="false"):
+        if file_path == "false":
+            file_path = input("enter a path : ")
+        file_path.replace("\"", "")
 
-        if not isinstance(list_, List):
-            return RTResult().failure(RTError(
-                self.pos_start, self.pos_end,
-                "First argument must be list",
-                exec_ctx
-            ))
-
-        if not isinstance(index, Number):
-            return RTResult().failure(RTError(
-                self.pos_start, self.pos_end,
-                "Second argument must be number",
-                exec_ctx
-            ))
-
-        try:
-            element = list_.elements.pop(index.value)
-        except:
-            return RTResult().failure(RTError(
-                self.pos_start, self.pos_end,
-                'Element at this index could not be removed from list because index is out of bounds',
-                exec_ctx
-            ))
-        return RTResult().success(element)
-
-    execute_pop.arg_names = ["list", "index"]
-
-    def execute_extend(self, exec_ctx):
-        listA = exec_ctx.symbol_table.get("listA")
-        listB = exec_ctx.symbol_table.get("listB")
-
-        if not isinstance(listA, List):
-            return RTResult().failure(RTError(
-                self.pos_start, self.pos_end,
-                "First argument must be list",
-                exec_ctx
-            ))
-
-        if not isinstance(listB, List):
-            return RTResult().failure(RTError(
-                self.pos_start, self.pos_end,
-                "Second argument must be list",
-                exec_ctx
-            ))
-
-        listA.elements.extend(listB.elements)
+        if os.path.isfile(file_path):
+            os.system(file_path)
+        else:
+            print(f"The requested file ({file_path}) does not exist, create it using createFile({file_path})")
         return RTResult().success(Number.null)
 
-    execute_extend.arg_names = ["listA", "listB"]
+    execute_openFile.arg_names = []
 
-    def execute_len(self, exec_ctx):
-        list_ = exec_ctx.symbol_table.get("list")
 
-        if not isinstance(list_, List):
-            return RTResult().failure(RTError(
-                self.pos_start, self.pos_end,
-                "Argument must be list",
-                exec_ctx
-            ))
+def execute_is_number(self, exec_ctx):
+    is_number = isinstance(exec_ctx.symbol_table.get("value"), Number)
+    return RTResult().success(Number.true if is_number else Number.false)
 
-        return RTResult().success(Number(len(list_.elements)))
 
-    execute_len.arg_names = ["list"]
+execute_is_number.arg_names = ["value"]
 
-    def execute_run(self, exec_ctx):
-        fn = exec_ctx.symbol_table.get("fn")
 
-        if not isinstance(fn, String):
-            return RTResult().failure(RTError(
-                self.pos_start, self.pos_end,
-                "Second argument must be string",
-                exec_ctx
-            ))
+def execute_is_string(self, exec_ctx):
+    is_number = isinstance(exec_ctx.symbol_table.get("value"), String)
+    return RTResult().success(Number.true if is_number else Number.false)
 
-        fn = fn.value
 
-        try:
-            with open(fn, "r") as f:
-                script = f.read()
-        except Exception as e:
-            return RTResult().failure(RTError(
-                self.pos_start, self.pos_end,
-                f"Failed to load script \"{fn}\"\n" + str(e),
-                exec_ctx
-            ))
+execute_is_string.arg_names = ["value"]
 
-        _, error = run(fn, script)
 
-        if error:
-            return RTResult().failure(RTError(
-                self.pos_start, self.pos_end,
-                f"Failed to finish executing script \"{fn}\"\n" +
-                error.as_string(),
-                exec_ctx
-            ))
+def execute_is_list(self, exec_ctx):
+    is_number = isinstance(exec_ctx.symbol_table.get("value"), List)
+    return RTResult().success(Number.true if is_number else Number.false)
 
-        return RTResult().success(Number.null)
 
-    execute_run.arg_names = ["fn"]
+execute_is_list.arg_names = ["value"]
 
+
+def execute_is_function(self, exec_ctx):
+    is_number = isinstance(
+        exec_ctx.symbol_table.get("value"), BaseFunction)
+    return RTResult().success(Number.true if is_number else Number.false)
+
+
+execute_is_function.arg_names = ["value"]
+
+
+def execute_append(self, exec_ctx):
+    list_ = exec_ctx.symbol_table.get("list")
+    value = exec_ctx.symbol_table.get("value")
+
+    if not isinstance(list_, List):
+        return RTResult().failure(RTError(
+            self.pos_start, self.pos_end,
+            "First argument must be list",
+            exec_ctx
+        ))
+
+    list_.elements.append(value)
+    return RTResult().success(Number.null)
+
+
+execute_append.arg_names = ["list", "value"]
+
+
+def execute_pop(self, exec_ctx):
+    list_ = exec_ctx.symbol_table.get("list")
+    index = exec_ctx.symbol_table.get("index")
+
+    if not isinstance(list_, List):
+        return RTResult().failure(RTError(
+            self.pos_start, self.pos_end,
+            "First argument must be list",
+            exec_ctx
+        ))
+
+    if not isinstance(index, Number):
+        return RTResult().failure(RTError(
+            self.pos_start, self.pos_end,
+            "Second argument must be number",
+            exec_ctx
+        ))
+
+    try:
+        element = list_.elements.pop(index.value)
+    except:
+        return RTResult().failure(RTError(
+            self.pos_start, self.pos_end,
+            'Element at this index could not be removed from list because index is out of bounds',
+            exec_ctx
+        ))
+    return RTResult().success(element)
+
+
+execute_pop.arg_names = ["list", "index"]
+
+
+def execute_extend(self, exec_ctx):
+    listA = exec_ctx.symbol_table.get("listA")
+    listB = exec_ctx.symbol_table.get("listB")
+
+    if not isinstance(listA, List):
+        return RTResult().failure(RTError(
+            self.pos_start, self.pos_end,
+            "First argument must be list",
+            exec_ctx
+        ))
+
+    if not isinstance(listB, List):
+        return RTResult().failure(RTError(
+            self.pos_start, self.pos_end,
+            "Second argument must be list",
+            exec_ctx
+        ))
+
+    listA.elements.extend(listB.elements)
+    return RTResult().success(Number.null)
+
+
+execute_extend.arg_names = ["listA", "listB"]
+
+
+def execute_len(self, exec_ctx):
+    list_ = exec_ctx.symbol_table.get("list")
+
+    if not isinstance(list_, List):
+        return RTResult().failure(RTError(
+            self.pos_start, self.pos_end,
+            "Argument must be list",
+            exec_ctx
+        ))
+
+    return RTResult().success(Number(len(list_.elements)))
+
+
+execute_len.arg_names = ["list"]
+
+
+def execute_run(self, exec_ctx):
+    fn = exec_ctx.symbol_table.get("fn")
+
+    if not isinstance(fn, String):
+        return RTResult().failure(RTError(
+            self.pos_start, self.pos_end,
+            "Second argument must be string",
+            exec_ctx
+        ))
+
+    fn = fn.value
+
+    try:
+        with open(fn, "r") as f:
+            script = f.read()
+    except Exception as e:
+        return RTResult().failure(RTError(
+            self.pos_start, self.pos_end,
+            f"Failed to load script \"{fn}\"\n" + str(e),
+            exec_ctx
+        ))
+
+    _, error = run(fn, script)
+
+    if error:
+        return RTResult().failure(RTError(
+            self.pos_start, self.pos_end,
+            f"Failed to finish executing script \"{fn}\"\n" +
+            error.as_string(),
+            exec_ctx
+        ))
+
+    return RTResult().success(Number.null)
+
+
+execute_run.arg_names = ["fn"]
 
 BuiltInFunction.print = BuiltInFunction("print")
 BuiltInFunction.print = BuiltInFunction("print")
@@ -2176,6 +2218,8 @@ BuiltInFunction.turtle_set_pos = BuiltInFunction("turtle_set_pos")
 BuiltInFunction.turtle_set_random_color = BuiltInFunction("turtle_set_random_color")
 BuiltInFunction.turtle_terminate = BuiltInFunction("turtle_terminate")
 BuiltInFunction.turtle_set_colormode = BuiltInFunction("turtle_set_colormode")
+BuiltInFunction.openFile = BuiltInFunction("openFile")
+BuiltInFunction.createFile = BuiltInFunction("createFile")
 
 
 #######################################
@@ -2521,6 +2565,8 @@ global_symbol_table.set("extend", BuiltInFunction.extend)
 global_symbol_table.set("len", BuiltInFunction.len)
 global_symbol_table.set("run", BuiltInFunction.run)
 global_symbol_table.set("openurl", BuiltInFunction.openurl)
+global_symbol_table.set("openFile", BuiltInFunction.openFile)
+global_symbol_table.set("createFile", BuiltInFunction.createFile)
 # endregion
 # region turtle commands
 global_symbol_table.set("createScreen", BuiltInFunction.createScreen)
