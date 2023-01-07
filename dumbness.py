@@ -1988,6 +1988,16 @@ class BuiltInFunction(BaseFunction):
 
     execute_turtle_terminate.arg_names = []
 
+    def execute_turtle_set_colormode(self, exec_ctx):
+        try:
+            turtle.colormode(float(str(exec_ctx.symbol_table.get("cmode"))))
+        except:
+            print(f"Invalid color code entered at line {self.pos_start.ln}")
+        finally:
+            return RTResult().success(Number.null)
+
+    execute_turtle_set_colormode.arg_names = ["cmode"]
+
     # endregion
     def execute_is_number(self, exec_ctx):
         is_number = isinstance(exec_ctx.symbol_table.get("value"), Number)
@@ -2165,6 +2175,7 @@ BuiltInFunction.turtle_set_shape = BuiltInFunction("turtle_set_shape")
 BuiltInFunction.turtle_set_pos = BuiltInFunction("turtle_set_pos")
 BuiltInFunction.turtle_set_random_color = BuiltInFunction("turtle_set_random_color")
 BuiltInFunction.turtle_terminate = BuiltInFunction("turtle_terminate")
+BuiltInFunction.turtle_set_colormode = BuiltInFunction("turtle_set_colormode")
 
 
 #######################################
@@ -2527,6 +2538,7 @@ global_symbol_table.set("turtle_set_shape", BuiltInFunction.turtle_set_shape)
 global_symbol_table.set("turtle_set_pos", BuiltInFunction.turtle_set_pos)
 global_symbol_table.set("turtle_set_random_color", BuiltInFunction.turtle_set_random_color)
 global_symbol_table.set("turtle_terminate", BuiltInFunction.turtle_terminate)
+global_symbol_table.set("turtle_set_colormode", BuiltInFunction.turtle_set_colormode)
 
 
 # endregion
